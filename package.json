@@ -67,11 +67,6 @@
           "default": true,
           "description": "%sftp.config.warnOnNewerRemote%"
         },
-        "sftp.notifyRemoteChanges": {
-          "type": "boolean",
-          "default": false,
-          "description": "%sftp.config.notifyRemoteChanges%"
-        },
         "sftp.printDebugLog": {
           "type": "boolean",
           "default": false,
