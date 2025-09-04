@@ -70,3 +70,5 @@ export const COMMAND_COPY_REMOTE_PATH = 'sftp.copyRemotePath';
 export const COMMAND_COPY_REMOTE_REL_PATH = 'sftp.copyRemoteRelativePath';
 export const COMMAND_COPY_LOCAL_PATH = 'sftp.copyLocalPath';
 export const COMMAND_COPY_LOCAL_REL_PATH = 'sftp.copyLocalRelativePath';
+export const COMMAND_COPY_REMOTE_PATH_GENERIC = 'sftp.copyRemotePath.generic';
+export const COMMAND_COPY_REMOTE_REL_PATH_GENERIC = 'sftp.copyRemoteRelativePath.generic';

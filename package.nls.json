@@ -48,6 +48,8 @@
   "sftp.command.editRemote": "Edit Remotely",
   "sftp.command.copyRemotePath": "Copy Remote Path",
   "sftp.command.copyRemoteRelativePath": "Copy Remote Relative Path",
+  "sftp.command.copyPath": "Copy Path",
+  "sftp.command.copyRelativePath": "Copy Relative Path",
   "sftp.command.copyLocalPath": "Copy Local Path",
   "sftp.command.copyLocalRelativePath": "Copy Local Relative Path"
 }

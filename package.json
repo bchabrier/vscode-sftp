@@ -91,8 +91,18 @@
         "category": "SFTP"
       },
       {
+        "command": "sftp.copyRemotePath.generic",
+        "title": "%sftp.command.copyPath%",
+        "category": "SFTP"
+      },
+      {
         "command": "sftp.copyRemoteRelativePath",
         "title": "%sftp.command.copyRemoteRelativePath%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.copyRemoteRelativePath.generic",
+        "title": "%sftp.command.copyRelativePath%",
         "category": "SFTP"
       },
       {
@@ -481,22 +491,22 @@
       "filemenu/sftp": [
         {
           "command": "sftp.edit.remote",
-          "group": "0_edit@1",
+          "group": "1_sftp@1",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.revealInRemoteExplorer",
-          "group": "1_nav@1",
+          "group": "1_sftp@2",
           "when": "sftp.enabled && !explorerResourceIsRoot"
         },
         {
           "command": "sftp.copyRemotePath",
-          "group": "2_copy@1",
+          "group": "1_sftp@3",
           "when": "sftp.enabled && !explorerResourceIsRoot"
         },
         {
           "command": "sftp.copyRemoteRelativePath",
-          "group": "2_copy@2",
+          "group": "1_sftp@4",
           "when": "sftp.enabled && !explorerResourceIsRoot"
         },
         {
@@ -606,12 +616,12 @@
           "when": "view == remoteExplorer && viewItem == root"
         },
         {
-          "command": "sftp.copyRemotePath",
+          "command": "sftp.copyRemotePath.generic",
           "group": "1_remoteCopy@1",
           "when": "view == remoteExplorer && viewItem != root"
         },
         {
-          "command": "sftp.copyRemoteRelativePath",
+          "command": "sftp.copyRemoteRelativePath.generic",
           "group": "1_remoteCopy@2",
           "when": "view == remoteExplorer && viewItem != root"
         },
