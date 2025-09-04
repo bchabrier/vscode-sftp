@@ -324,6 +324,71 @@
           "light": "resources/light/refresh.svg",
           "dark": "resources/dark/refresh.svg"
         }
+      },
+      {
+        "command": "sftp.createConnection",
+        "title": "%sftp.command.createConnection%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.editConnection",
+        "title": "%sftp.command.editConnection%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.deleteConnection",
+        "title": "%sftp.command.deleteConnection%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.remoteExplorer.connect",
+        "title": "%sftp.command.connect%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.groupByHost",
+        "title": "%sftp.command.groupByHost%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.groupByContext",
+        "title": "%sftp.command.groupByContext%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.groupByDefault",
+        "title": "%sftp.command.groupByDefault%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.rename.file",
+        "title": "%sftp.command.renameFile%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.rename.folder",
+        "title": "%sftp.command.renameFolder%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.remote.chmod",
+        "title": "%sftp.command.remoteChmod%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.remote.touch",
+        "title": "%sftp.command.remoteTouch%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.download.fileAs",
+        "title": "%sftp.command.downloadFileAs%",
+        "category": "SFTP"
+      },
+      {
+        "command": "sftp.download.folderAs",
+        "title": "%sftp.command.downloadFolderAs%",
+        "category": "SFTP"
       }
     ],
     "menus": {
@@ -616,87 +681,121 @@
           "when": "view == remoteExplorer && viewItem == root"
         },
         {
-          "command": "sftp.copyRemotePath.generic",
-          "group": "1_remoteCopy@1",
-          "when": "view == remoteExplorer && viewItem != root"
+          "command": "sftp.openConnectInTerminal",
+          "group": "inline",
+          "when": "view == remoteExplorer && viewItem == root"
         },
         {
-          "command": "sftp.copyRemoteRelativePath.generic",
-          "group": "1_remoteCopy@2",
-          "when": "view == remoteExplorer && viewItem != root"
+          "command": "sftp.editConnection",
+          "group": "inline",
+          "when": "view == remoteExplorer && viewItem == root"
+        },
+        {
+          "command": "sftp.deleteConnection",
+          "group": "2_navigation",
+          "when": "view == remoteExplorer && viewItem == root"
+        },
+        {
+          "command": "sftp.editConnection",
+          "group": "2_navigation",
+          "when": "view == remoteExplorer && viewItem == root"
         },
         {
           "command": "sftp.remoteExplorer.editInLocal",
-          "group": "2_local@1",
+          "group": "2_files",
           "when": "view == remoteExplorer && viewItem == file && !config.sftp.downloadWhenOpenInRemoteExplorer"
         },
         {
           "command": "sftp.viewContent",
-          "group": "2_local@1",
+          "group": "2_files",
           "when": "view == remoteExplorer && viewItem == file && config.sftp.downloadWhenOpenInRemoteExplorer"
         },
         {
           "command": "sftp.revealInExplorer",
-          "group": "2_local@2",
-          "when": "view == remoteExplorer && viewItem != root"
-        },
-        {
-          "command": "sftp.copyLocalPath",
-          "group": "2_local@3",
-          "when": "view == remoteExplorer && viewItem != root"
-        },
-        {
-          "command": "sftp.copyLocalRelativePath",
-          "group": "2_local@4",
-          "when": "view == remoteExplorer && viewItem != root"
+          "group": "2_files",
+          "when": "view == remoteExplorer && viewItem != root && viewItem != group"
         },
         {
           "command": "sftp.upload.folder",
           "group": "3_trans@1",
           "alt": "sftp.forceUpload",
-          "when": "sftp.enabled && viewItem != file"
-        },
-        {
-          "command": "sftp.upload.folder.to.allProfiles",
-          "group": "3_trans@1",
-          "alt": "sftp.forceUpload.to.allProfiles",
-          "when": "sftp.enabled && viewItem != file"
-        },
-        {
-          "command": "sftp.download.file",
-          "group": "3_fileTransfer@1",
-          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
+          "when": "sftp.enabled && view == remoteExplorer && viewItem == folder"
         },
         {
           "command": "sftp.upload.file",
-          "group": "3_fileTransfer@2",
-          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
+          "group": "3_trans@1",
+          "when": "view == remoteExplorer && viewItem == file"
         },
         {
-          "command": "sftp.upload.file.to.allProfiles",
-          "group": "3_fileTransfer@3",
-          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
+          "command": "sftp.rename.file",
+          "group": "3_trans@1",
+          "when": "view == remoteExplorer && viewItem == file && !listMultiSelection"
+        },
+        {
+          "command": "sftp.rename.folder",
+          "group": "3_trans@1",
+          "when": "view == remoteExplorer && viewItem == folder && !listMultiSelection"
         },
         {
           "command": "sftp.download.folder",
           "group": "3_trans@2",
           "alt": "sftp.forceDownload",
-          "when": "sftp.enabled && viewItem != file"
+          "when": "sftp.enabled && view == remoteExplorer && viewItem == folder"
+        },
+        {
+          "command": "sftp.download.folderAs",
+          "group": "3_trans@2",
+          "when": "sftp.enabled && view == remoteExplorer && viewItem == folder && !listMultiSelection"
+        },
+        {
+          "command": "sftp.remoteExplorer.refresh",
+          "group": "3_trans@2",
+          "when": "view == remoteExplorer && viewItem == folder"
+        },
+        {
+          "command": "sftp.download.file",
+          "group": "3_trans@2",
+          "when": "view == remoteExplorer && viewItem == file"
+        },
+        {
+          "command": "sftp.download.fileAs",
+          "group": "3_trans@2",
+          "when": "view == remoteExplorer && viewItem == file && !listMultiSelection"
         },
         {
           "command": "sftp.delete.remote",
           "group": "7_modification",
-          "when": "view == remoteExplorer && viewItem != root"
+          "when": "view == remoteExplorer && viewItem != root && viewItem != group"
         },
         {
           "command": "sftp.create.folder",
           "group": "7_modification",
-          "when": "view == remoteExplorer && viewItem != file"
+          "when": "view == remoteExplorer && viewItem != file && viewItem != group"
         },
         {
           "command": "sftp.create.file",
           "group": "7_modification",
-          "when": "view == remoteExplorer && viewItem != file"
+          "when": "view == remoteExplorer && viewItem != file && viewItem != group"
+        },
+        {
+          "command": "sftp.remote.chmod",
+          "group": "3_trans@3",
+          "when": "view == remoteExplorer && viewItem != root && viewItem != group && !listMultiSelection"
+        },
+        {
+          "command": "sftp.remote.touch",
+          "group": "3_trans@3",
+          "when": "false && view == remoteExplorer && viewItem != root && viewItem != group && !listMultiSelection"
+        },
+        {
+          "command": "sftp.download.folder",
+          "group": "inline",
+          "when": "sftp.enabled && view == remoteExplorer && viewItem == folder"
+        },
+        {
+          "command": "sftp.rename.folder",
+          "group": "inline",
+          "when": "view == remoteExplorer && viewItem == folder && !listMultiSelection"
         },
         {
           "command": "sftp.download.file",
@@ -704,9 +803,19 @@
           "when": "view == remoteExplorer && viewItem == file"
         },
         {
-          "command": "sftp.download.folder",
+          "command": "sftp.remoteExplorer.refresh",
           "group": "inline",
-          "when": "sftp.enabled && view == remoteExplorer && viewItem == folder"
+          "when": "view == remoteExplorer && viewItem != file && viewItem != group"
+        },
+        {
+          "command": "sftp.remoteExplorer.connect",
+          "group": "inline@4",
+          "when": "view == remoteExplorer && viewItem == root"
+        },
+        {
+          "command": "sftp.rename.file",
+          "group": "inline",
+          "when": "view == remoteExplorer && viewItem == file && !listMultiSelection"
         }
       ],
       "scm/title": [
@@ -820,6 +929,9 @@
     "testMatch": [
       "<rootDir>/test/**/*.spec.js",
       "<rootDir>/**/*/__tests__/*.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/_debug/"
     ]
   }
 }
