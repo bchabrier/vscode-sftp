@@ -1,26 +1,28 @@
-# sftp sync extension for VS Code
+# SFTP2
 
-New maintained and updated version by [@Natizyskunk](https://github.com/Natizyskunk/) 😀 <!-- and [@satiromarra](https://github.com/satiromarra) --> <br>
-(Forked from the no longer maintained [liximomo's SFTP plugin](https://github.com/liximomo/vscode-sftp.git))
+This plugin is an update of [SFTP](https://marketplace.visualstudio.com/items?itemName=Natizyskunk.sftp) by [@tokunagakazuya](https://github.com/tokunagakazuya). To bring the user experience closer to JetBrains IDEs (PhpStorm, WebStorm), the following modifications were made:
 
-- VS Code marketplace : https://marketplace.visualstudio.com/items?itemName=Natizyskunk.sftp <br>
-- VSIX release : https://github.com/Natizyskunk/vscode-sftp/releases/
+- Save directly opened remote files with overwrite  
+- Expanded menu in the remote explorer  
 
-## INFOS - 2023/06/23
-This is the main repository for the SFTP extension since [@liximomo](https://github.com/liximomo) has set his own to deprecated in favor of this one in the VSCode marketplace.
-There are also other forks that are available. Feel free to try them.
+Please note that some of the features of [@satiromarra](https://marketplace.visualstudio.com/items?itemName=satiromarra.code-sftp), which offers the most feature-rich implementation, are not available.
 
-A lot of work as been brought to fix bugs, add new features and more than 50 updates have been released with a lot of improvements and stability fixes for almost two years now. 😎
+- (new) When select a image on Remote Explorer, opens as like local image.
+- (new) Warn when uploading over newer file.
+- ~~(fix) Order connections when grouped~~
+- ~~(new) Group connections by context~~
+- ~~Fix save new connection on empty folder~~
+- ~~(new) Group connections by host~~
+- ~~(new) Add support for .env files~~
+- ~~(new) Configure charset to ASCII in Ftp protocol~~
+- ~~(new) Create/Edit connections with User Interface~~
+- (new) Rename remote Files and Folders
+- (new) Multiple configurations with multiples profiles
+- (new) Change remote permission in folder and files
+- (new) Download files and folders as another name
+- Fixed many bugs
 
-At the start of the year 2023, a new fork from [@satiromarra](https://github.com/satiromarra) was born with some really cool features. So for the future we decided to work together and put our efforts in one place to make an even better extension for the community.
-
-As of today (2023-06-23) we'll now be two collaborators : [@satiromarra](https://github.com/satiromarra) and [@me](https://github.com/Natizyskunk) 🙂.
-
-We've been working hard to fix a lot of things and we've updated more than 50 new releases with a lot of improvements and stability fixes and we've brought new features for almost two years now. 
-
-We'll try to keep this extension up-to-date as much as we can and add new relevant features. For the last 6 months I wasn't able to work a lot on the project because of personal reasons at the time so I'm glad [@satiromarra](https://github.com/satiromarra) was able to take on while I wasn't here.
-
-Also we would be more than happy to have you participate in one way or another to this project. You can do so by simply following the [templates](https://github.com/Natizyskunk/vscode-sftp/issues/new/choose) when you open a new issue or a new pull request.
+Since these were implemented through vibe coding using Codex CLI, I did not touch the code itself.
 
 ---
 
@@ -45,7 +47,7 @@ VSCode-SFTP enables you to add, edit or delete files within a local directory an
 ### Method 1 (Recommended : Auto update)
 1. Select Extensions (Ctrl + Shift + X).
 2. Uninstall current sftp extension from @liximomo.
-3. Install new extension directly from VS Code Marketplace : https://marketplace.visualstudio.com/items?itemName=Natizyskunk.sftp.
+3. Install new extension directly from VS Code Marketplace : https://marketplace.visualstudio.com/items?itemName=tokunagakazuya.sftp.
 4. Voilà!
 
 ### Method 2 (Manual update)
@@ -279,7 +281,7 @@ In sftp.json:
 ```
 
 ## Remote Explorer
-![remote-explorer-preview](https://raw.githubusercontent.com/Natizyskunk/vscode-sftp/master/assets/showcase/remote-explorer.png)
+![remote-explorer-preview](https://raw.githubusercontent.com/tokunagakazuya/vscode-sftp/master/assets/showcase/remote-explorer.png)
 
 Remote Explorer lets you explore files in remote. You can open Remote Explorer by:
 
@@ -309,7 +311,7 @@ In sftp.json:
 1. Open User Settings.
   - On Windows/Linux - `File > Preferences > Settings`
   - On macOS - `Code > Preferences > Settings`
-2. Set `sftp.debug` to `true` and reload vscode.
+2. Set `sftp.printDebugLog` to `true` and reload vscode.
 3. View the logs in `View > Output > sftp`.
 
 ## FAQ
@@ -317,11 +319,3 @@ You can see all the Frequently Asked Questions [here](./FAQ.md).
 
 ## Donation
 If this project helped you reduce development time and you wish to contribute financially
-
-### Buy Me a Coffee
-[![Buy Me A Coffee](https://bmc-cdn.nyc3.digitaloceanspaces.com/BMC-button-images/custom_images/orange_img.png)](https://www.buymeacoffee.com/Natizyskunk)
-
-### PayPal
-<!-- [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BY89QD47D7MPS&source=url) -->
-[![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/donate?business=DELD7APHHM3BC&no_recurring=0&currency_code=EUR)
-[![PayPal Me](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/natanfourie)
