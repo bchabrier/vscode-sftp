@@ -545,21 +545,21 @@
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
+          "command": "sftp.download.folder",
+          "group": "2_folderTransfer@1",
+          "alt": "sftp.forceDownload",
+          "when": "sftp.enabled && explorerResourceIsFolder"
+        },
+        {
           "command": "sftp.upload.folder",
-          "group": "4_upload@2",
+          "group": "2_folderTransfer@2",
           "alt": "sftp.forceUpload",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.upload.folder.to.allProfiles",
-          "group": "4_upload@4",
+          "group": "2_folderTransfer@3",
           "alt": "sftp.forceUpload.to.allProfiles",
-          "when": "sftp.enabled && explorerResourceIsFolder"
-        },
-        {
-          "command": "sftp.download.folder",
-          "group": "5_download@2",
-          "alt": "sftp.forceDownload",
           "when": "sftp.enabled && explorerResourceIsFolder"
         }
       ],
