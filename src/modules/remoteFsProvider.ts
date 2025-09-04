@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fse from 'fs-extra';
-import { Readable } from 'stream';
 import { getFileServiceById } from './serviceManager';
-import { UResource, FileType as CoreFileType, FileEntry } from '../core';
+import { UResource, FileType as CoreFileType } from '../core';
 import { REMOTE_SCHEME } from '../constants';
 import localFs from '../core/localFs';
 import { transfer, TransferDirection } from '../fileHandlers/transfer/transfer';
@@ -137,4 +136,3 @@ export function registerRemoteFsProvider(context: vscode.ExtensionContext) {
     vscode.workspace.registerFileSystemProvider(REMOTE_SCHEME, provider, { isCaseSensitive: true })
   );
 }
-
