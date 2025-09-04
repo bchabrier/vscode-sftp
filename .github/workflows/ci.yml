@@ -9,19 +9,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [18, 20]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node }}
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 20
           cache: npm
 
       - name: Install dependencies
@@ -37,7 +33,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: dist-${{ matrix.node }}
+          name: dist-20
           path: dist/
           if-no-files-found: ignore
-
