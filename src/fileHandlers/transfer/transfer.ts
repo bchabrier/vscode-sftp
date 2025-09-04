@@ -10,7 +10,7 @@ import {
 import { FileHandleOption } from '../option';
 import { flatten } from '../../utils';
 import logger from '../../logger';
-import { getOpenTextDocuments, showConfirmMessage } from '../../host';
+import { getOpenTextDocuments } from '../../host';
 
 interface InternalTransferOption extends FileHandleOption, TransferTaskTransferOption {
   warnOnNewerRemote?: boolean;
@@ -125,32 +125,7 @@ async function transferFile(
     return;
   }
 
-  // Warn if remote is newer (only for local ➞ remote uploads)
-  if (config.transferDirection === TransferDirection.LOCAL_TO_REMOTE && config.transferOption.warnOnNewerRemote) {
-    try {
-      const [localStat, remoteStat] = await Promise.all([
-        config.srcFs.lstat(config.srcFsPath),
-        config.targetFs.lstat(config.targetFsPath).catch(() => null),
-      ]);
-      if (remoteStat && fileType === FileType.File) {
-        const LOCAL_MS = localStat.mtime;
-        const REMOTE_MS = remoteStat.mtime;
-        const DRIFT = 1000; // tolerate 1s drift
-        if (REMOTE_MS > LOCAL_MS + DRIFT) {
-          const ok = await showConfirmMessage(
-            'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?',
-            'Upload anyway',
-            'Skip'
-          );
-          if (!ok) {
-            return; // skip this file
-          }
-        }
-      }
-    } catch {
-      // ignore check errors and continue upload
-    }
-  }
+  // (warnOnNewerRemote) handled inside TransferTask just before upload
 
   collect(
     new TransferTask(
