@@ -289,12 +289,12 @@
       },
       {
         "command": "sftp.create.folder",
-        "title": "%sftp.command.createFolder%",
+        "title": "%sftp.command.newFolder%",
         "category": "SFTP"
       },
       {
         "command": "sftp.create.file",
-        "title": "%sftp.command.createFile%",
+        "title": "%sftp.command.newFile%",
         "category": "SFTP"
       },
       {
