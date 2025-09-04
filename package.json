@@ -34,6 +34,12 @@
   "icon": "resources/icon.png",
   "main": "./dist/extension",
   "contributes": {
+    "submenus": [
+      {
+        "id": "filemenu/sftp",
+        "label": "%sftp.submenu.title%"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
@@ -442,60 +448,67 @@
       ],
       "explorer/context": [
         {
+          "submenu": "filemenu/sftp",
+          "group": "z_sftp",
+          "when": "sftp.enabled"
+        }
+      ],
+      "filemenu/sftp": [
+        {
           "command": "sftp.revealInRemoteExplorer",
-          "group": "navigation@20",
+          "group": "1_nav",
           "when": "sftp.enabled && !explorerResourceIsRoot"
         },
         {
           "command": "sftp.diff",
-          "group": "3_compare",
+          "group": "2_compare",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.sync.localToRemote",
-          "group": "sftp.sync@1",
+          "group": "3_sync@1",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.sync.remoteToLocal",
-          "group": "sftp.sync@2",
+          "group": "3_sync@2",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.sync.bothDirections",
-          "group": "sftp.sync@3",
+          "group": "3_sync@3",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.upload.file",
-          "group": "sftp.trans@1",
+          "group": "4_upload@1",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.upload.folder",
-          "group": "sftp.trans@1",
+          "group": "4_upload@2",
           "alt": "sftp.forceUpload",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.upload.file.to.allProfiles",
-          "group": "sftp.trans@1",
+          "group": "4_upload@3",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.upload.folder.to.allProfiles",
-          "group": "sftp.trans@1",
+          "group": "4_upload@4",
           "alt": "sftp.forceUpload.to.allProfiles",
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
           "command": "sftp.download.file",
-          "group": "sftp.trans@2",
+          "group": "5_download@1",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.download.folder",
-          "group": "sftp.trans@2",
+          "group": "5_download@2",
           "alt": "sftp.forceDownload",
           "when": "sftp.enabled && explorerResourceIsFolder"
         }

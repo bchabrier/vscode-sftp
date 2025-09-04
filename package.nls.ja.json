@@ -43,5 +43,6 @@
   "sftp.command.revealInRemoteExplorer": "リモートエクスプローラーで表示",
   "sftp.command.editInLocal": "ローカルで編集",
   "sftp.command.viewContent": "コンテンツを表示",
-  "sftp.command.refresh": "更新"
+  "sftp.command.refresh": "更新",
+  "sftp.submenu.title": "[SFTP]"
 }

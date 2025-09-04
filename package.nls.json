@@ -43,5 +43,6 @@
   "sftp.command.revealInRemoteExplorer": "Reveal in Remote Explorer",
   "sftp.command.editInLocal": "Edit in Local",
   "sftp.command.viewContent": "View Content",
-  "sftp.command.refresh": "Refresh"
+  "sftp.command.refresh": "Refresh",
+  "sftp.submenu.title": "[SFTP]"
 }
