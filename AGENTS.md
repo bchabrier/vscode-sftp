@@ -17,6 +17,15 @@
 - `npm run package`: create `.vsix` via `vsce` (use `npx vsce package` if `vsce` is not installed).
 - Debug: open in VS Code and run `Run and Debug > Launch Extension` (uses `.vscode/launch.json`).
 
+## Localization (i18n)
+- UI strings in `package.json` use VS Code NLS placeholders like `%key%`.
+- Base strings live in `package.nls.json`; Japanese translations in `package.nls.ja.json`.
+- Packaging: ensure `.vscodeignore` allows `package.nls.json` and `package.nls.*.json` so VSIX resolves placeholders. Already configured.
+- To add/modify strings:
+  - Replace literals in `package.json` with `%sftp.xxx%` keys.
+  - Add the same keys to `package.nls.json` (default) and translate in `package.nls.ja.json`.
+  - Verify in VS Code by switching display language to Japanese and reloading.
+
 ## Coding Style & Naming Conventions
 - Language: TypeScript (target ES6). Enforced via TSLint (`tslint.json`).
 - Style: single quotes, semicolons, 2-space indent, trailing commas on multiline objects/arrays, no redundant `public` members, minimal arrow parens.
