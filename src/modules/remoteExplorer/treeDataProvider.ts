@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { showTextDocument } from '../../host';
+import { showTextDocument, executeCommand } from '../../host';
 import {
   upath,
   UResource,
@@ -277,7 +277,7 @@ export default class RemoteTreeData
     const ext = upath.extname(child.resource.fsPath).toLowerCase();
     const isBinary = binaryExts.has(ext);
     if (!isBinary) {
-      return showTextDocument(child.resource.uri);
+      return executeCommand('vscode.open', child.resource.uri);
     }
 
     // binary: download to temp and open, then auto-clean on close
@@ -288,7 +288,7 @@ export default class RemoteTreeData
     const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: ext });
     await fileOperations.transferFile(child.resource.fsPath, tmpPath, remotefs, localFs);
     trackTempFile(tmpPath);
-    return showTextDocument((require('vscode')).Uri.file(tmpPath));
+    return executeCommand('vscode.open', (require('vscode')).Uri.file(tmpPath));
   }
 
   private _getRoots(): ExplorerRoot[] {
