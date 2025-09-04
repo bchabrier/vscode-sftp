@@ -259,17 +259,61 @@ export default class RemoteTreeData
     const child = item as ExplorerChild;
     if (child.isDirectory) return;
     const uri = child.resource.uri;
-    const ext = upath.extname(child.resource.fsPath).toLowerCase();
-    const isImage = ['.png','.jpg','.jpeg','.gif','.bmp','.webp','.svg'].includes(ext);
-    if (isImage) {
-      // Fallback to download+open for binary images
-      const { downloadFile } = require('../../fileHandlers');
-      const { handleCtxFromUri } = require('../../fileHandlers/createFileHandler');
-      const ctx = handleCtxFromUri(uri);
-      downloadFile(ctx, { ignore: null }).then(()=> showTextDocument(ctx.target.localUri, { preview: true }));
-      return;
+    this._openSmart(child).catch(()=> showTextDocument(uri));
+  }
+
+  private async _openSmart(child: ExplorerChild) {
+    const root = this.findRoot(child.resource.uri);
+    if (!root) return showTextDocument(child.resource.uri);
+    const { fileService, config } = root.explorerContext;
+    const remotefs = await fileService.getRemoteFileSystem(config);
+    // try read small chunk to detect if text
+    let isText = true;
+    try {
+      const stream = await remotefs.get(child.resource.fsPath);
+      const chunks: Buffer[] = [];
+      let length = 0;
+      await new Promise<void>((resolve, reject) => {
+        stream.on('data', (buf: Buffer) => {
+          if (length < 8192) {
+            chunks.push(buf);
+            length += buf.length;
+          }
+          if (length >= 8192) {
+            stream.pause();
+            stream.removeAllListeners();
+            ;(stream as any).destroy?.();
+            resolve();
+          }
+        });
+        stream.on('end', () => resolve());
+        stream.on('error', reject);
+      });
+      const sample = Buffer.concat(chunks);
+      // Heuristic: treat as binary if NULL byte or >30% non-printable bytes
+      const len = sample.length;
+      let nonPrintable = 0;
+      for (let i=0;i<len;i++) {
+        const c = sample[i];
+        if (c === 0) { isText = false; break; }
+        if (c < 9 || (c > 13 && c < 32)) nonPrintable++;
+      }
+      if (isText && len>0 && nonPrintable/len > 0.3) isText = false;
+    } catch {
+      isText = true;
     }
-    showTextDocument(uri);
+
+    if (isText) {
+      return showTextDocument(child.resource.uri);
+    }
+
+    // binary: download to temp and open
+    const { fileOperations } = require('../../core');
+    const { makeTmpFile } = require('../../helper');
+    const localFs = require('../../core/localFs').default;
+    const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: upath.extname(child.resource.fsPath) });
+    await fileOperations.transferFile(child.resource.fsPath, tmpPath, remotefs, localFs);
+    return showTextDocument((require('../../core').UResource).makeResource({ fsPath: tmpPath }).uri);
   }
 
   private _getRoots(): ExplorerRoot[] {

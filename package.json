@@ -132,7 +132,11 @@
       {
         "command": "sftp.openConnectInTerminal",
         "title": "%sftp.command.openSsh%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/terminal.svg",
+          "dark": "resources/dark/terminal.svg"
+        }
       },
       {
         "command": "sftp.cancelAllTransfer",
@@ -341,7 +345,11 @@
       {
         "command": "sftp.editConnection",
         "title": "%sftp.command.editConnection%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/edit.svg",
+          "dark": "resources/dark/edit.svg"
+        }
       },
       {
         "command": "sftp.deleteConnection",
@@ -351,7 +359,11 @@
       {
         "command": "sftp.remoteExplorer.connect",
         "title": "%sftp.command.connect%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/connect.svg",
+          "dark": "resources/dark/connect.svg"
+        }
       },
       {
         "command": "sftp.groupByHost",
@@ -422,7 +434,17 @@
     "menus": {
       "view/title": [
         {
+          "command": "sftp.createConnection",
+          "when": "view == remoteExplorer",
+          "group": "navigation"
+        },
+        {
           "command": "sftp.remoteExplorer.refresh",
+          "when": "view == remoteExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "sftp.setProfile",
           "when": "view == remoteExplorer",
           "group": "navigation"
         }
