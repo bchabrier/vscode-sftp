@@ -26,21 +26,15 @@ jobs:
       - name: Run tests
         run: npm test --silent
 
-      - name: Build (webpack production bundle)
-        run: npm run compile
-
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dist-20
-          path: dist/
-          if-no-files-found: ignore
-
       - name: Package VSIX
         run: |
           mkdir -p artifacts
-          npx --yes @vscode/vsce package --no-yarn --out artifacts/sftp-${{ github.ref_name }}-${{ github.run_number }}.vsix
+          NAME=$(node -p "require('./package.json').name")
+          PUB=$(node -p "require('./package.json').publisher")
+          VER=$(node -p "require('./package.json').version")
+          OUT="artifacts/${PUB}.${NAME}-${VER}.vsix"
+          npx --yes @vscode/vsce package --no-yarn --out "$OUT"
+          ls -la artifacts
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
