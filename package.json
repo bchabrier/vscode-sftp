@@ -67,11 +67,6 @@
           "default": false,
           "description": "%sftp.config.printDebugLog%"
         },
-        "sftp.debug": {
-          "type": "boolean",
-          "default": false,
-          "description": "%sftp.config.debug%"
-        },
         "sftp.downloadWhenOpenInRemoteExplorer": {
           "type": "boolean",
           "default": false,

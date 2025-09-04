@@ -3,7 +3,6 @@
   "sftp.views.remoteExplorerName": "Explorer",
   "sftp.config.title": "SFTP configuration",
   "sftp.config.printDebugLog": "print debug log on sftp output channel.(reload vscode when change this)",
-  "sftp.config.debug": "print debug log on sftp output channel.(reload vscode when change this)",
   "sftp.config.downloadWhenOpenInRemoteExplorer": "\"Download\" instead of \"View Content\" when open file in Remote Explorer",
   "sftp.command.config": "Config",
   "sftp.command.setProfile": "Set Profile",

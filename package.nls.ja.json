@@ -3,7 +3,6 @@
   "sftp.views.remoteExplorerName": "エクスプローラー",
   "sftp.config.title": "SFTP の設定",
   "sftp.config.printDebugLog": "SFTP 出力チャンネルにデバッグログを表示（変更時は VS Code の再読み込みが必要）",
-  "sftp.config.debug": "SFTP 出力チャンネルにデバッグログを表示（変更時は VS Code の再読み込みが必要）",
   "sftp.config.downloadWhenOpenInRemoteExplorer": "リモートエクスプローラーでファイルを開くときに『コンテンツを表示』の代わりに『ダウンロード』を行う",
   "sftp.command.config": "設定",
   "sftp.command.setProfile": "プロファイルを設定",
