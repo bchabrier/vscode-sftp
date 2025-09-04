@@ -284,10 +284,8 @@ export default class RemoteTreeData
     const { fileOperations } = require('../../core');
     const { makeTmpFile } = require('../../helper');
     const localFs = require('../../core/localFs').default;
-    const { trackTempFile } = require('../tempManager');
     const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: ext });
     await fileOperations.transferFile(child.resource.fsPath, tmpPath, remotefs, localFs);
-    trackTempFile(tmpPath);
     return executeCommand('vscode.open', (require('vscode')).Uri.file(tmpPath));
   }
 
