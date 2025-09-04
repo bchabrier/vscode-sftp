@@ -11,6 +11,7 @@ import { getAllFileService, createFileService, disposeFileService } from './modu
 import { getWorkspaceFolders, setContextValue } from './host';
 import RemoteExplorer from './modules/remoteExplorer';
 import { registerRemoteFsProvider } from './modules/remoteFsProvider';
+import { registerTempManager } from './modules/tempManager';
 
 async function setupWorkspaceFolder(dir) {
   const configs = await tryLoadConfigs(dir);
@@ -56,6 +57,7 @@ export async function activate(context: vscode.ExtensionContext) {
     await setup(workspaceFolders);
     // Enable direct editing for remote: URIs
     registerRemoteFsProvider(context);
+    registerTempManager(context);
     app.remoteExplorer = new RemoteExplorer(context);
   } catch (error) {
     reportError(error);

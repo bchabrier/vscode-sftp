@@ -267,53 +267,28 @@ export default class RemoteTreeData
     if (!root) return showTextDocument(child.resource.uri);
     const { fileService, config } = root.explorerContext;
     const remotefs = await fileService.getRemoteFileSystem(config);
-    // try read small chunk to detect if text
-    let isText = true;
-    try {
-      const stream = await remotefs.get(child.resource.fsPath);
-      const chunks: Buffer[] = [];
-      let length = 0;
-      await new Promise<void>((resolve, reject) => {
-        stream.on('data', (buf: Buffer) => {
-          if (length < 8192) {
-            chunks.push(buf);
-            length += buf.length;
-          }
-          if (length >= 8192) {
-            stream.pause();
-            stream.removeAllListeners();
-            ;(stream as any).destroy?.();
-            resolve();
-          }
-        });
-        stream.on('end', () => resolve());
-        stream.on('error', reject);
-      });
-      const sample = Buffer.concat(chunks);
-      // Heuristic: treat as binary if NULL byte or >30% non-printable bytes
-      const len = sample.length;
-      let nonPrintable = 0;
-      for (let i=0;i<len;i++) {
-        const c = sample[i];
-        if (c === 0) { isText = false; break; }
-        if (c < 9 || (c > 13 && c < 32)) nonPrintable++;
-      }
-      if (isText && len>0 && nonPrintable/len > 0.3) isText = false;
-    } catch {
-      isText = true;
-    }
-
-    if (isText) {
+    // Simple extension-based binary list (safe fallback). If needed, we can add true text/binary detection later.
+    const binaryExts = new Set([
+      '.png','.jpg','.jpeg','.gif','.bmp','.webp','.svg','.ico','.cur',
+      '.pdf','.zip','.tar','.gz','.tgz','.bz2','.7z','.rar',
+      '.mp3','.ogg','.wav','.flac','.mp4','.webm','.mov','.avi',
+      '.ttf','.otf','.woff','.woff2','.psd','.ai'
+    ]);
+    const ext = upath.extname(child.resource.fsPath).toLowerCase();
+    const isBinary = binaryExts.has(ext);
+    if (!isBinary) {
       return showTextDocument(child.resource.uri);
     }
 
-    // binary: download to temp and open
+    // binary: download to temp and open, then auto-clean on close
     const { fileOperations } = require('../../core');
     const { makeTmpFile } = require('../../helper');
     const localFs = require('../../core/localFs').default;
-    const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: upath.extname(child.resource.fsPath) });
+    const { trackTempFile } = require('../tempManager');
+    const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: ext });
     await fileOperations.transferFile(child.resource.fsPath, tmpPath, remotefs, localFs);
-    return showTextDocument((require('../../core').UResource).makeResource({ fsPath: tmpPath }).uri);
+    trackTempFile(tmpPath);
+    return showTextDocument((require('vscode')).Uri.file(tmpPath));
   }
 
   private _getRoots(): ExplorerRoot[] {
