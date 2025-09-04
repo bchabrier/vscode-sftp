@@ -6,7 +6,6 @@ import {
 } from '../../constants';
 import { UResource } from '../../core';
 import { toRemotePath } from '../../helper';
-import { REMOTE_SCHEME } from '../../constants';
 import { getFileService } from '../serviceManager';
 import RemoteTreeDataProvider, { ExplorerItem } from './treeDataProvider';
 
