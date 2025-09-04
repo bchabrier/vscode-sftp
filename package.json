@@ -530,8 +530,18 @@
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
+          "command": "sftp.download.file",
+          "group": "2_fileTransfer@1",
+          "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
+        },
+        {
           "command": "sftp.upload.file",
-          "group": "4_upload@1",
+          "group": "2_fileTransfer@2",
+          "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
+        },
+        {
+          "command": "sftp.upload.file.to.allProfiles",
+          "group": "2_fileTransfer@3",
           "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
@@ -541,20 +551,10 @@
           "when": "sftp.enabled && explorerResourceIsFolder"
         },
         {
-          "command": "sftp.upload.file.to.allProfiles",
-          "group": "4_upload@3",
-          "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
-        },
-        {
           "command": "sftp.upload.folder.to.allProfiles",
           "group": "4_upload@4",
           "alt": "sftp.forceUpload.to.allProfiles",
           "when": "sftp.enabled && explorerResourceIsFolder"
-        },
-        {
-          "command": "sftp.download.file",
-          "group": "5_download@1",
-          "when": "sftp.enabled && !explorerResourceIsRoot && !explorerResourceIsFolder"
         },
         {
           "command": "sftp.download.folder",
@@ -657,19 +657,24 @@
           "when": "sftp.enabled && viewItem != file"
         },
         {
-          "command": "sftp.upload.file",
-          "group": "3_trans@1",
-          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
-        },
-        {
           "command": "sftp.upload.folder.to.allProfiles",
           "group": "3_trans@1",
           "alt": "sftp.forceUpload.to.allProfiles",
           "when": "sftp.enabled && viewItem != file"
         },
         {
+          "command": "sftp.download.file",
+          "group": "3_fileTransfer@1",
+          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
+        },
+        {
+          "command": "sftp.upload.file",
+          "group": "3_fileTransfer@2",
+          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
+        },
+        {
           "command": "sftp.upload.file.to.allProfiles",
-          "group": "3_trans@1",
+          "group": "3_fileTransfer@3",
           "when": "view == remoteExplorer && viewItem != root && viewItem == file"
         },
         {
@@ -677,11 +682,6 @@
           "group": "3_trans@2",
           "alt": "sftp.forceDownload",
           "when": "sftp.enabled && viewItem != file"
-        },
-        {
-          "command": "sftp.download.file",
-          "group": "3_trans@2",
-          "when": "view == remoteExplorer && viewItem != root && viewItem == file"
         },
         {
           "command": "sftp.delete.remote",

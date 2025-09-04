@@ -48,7 +48,7 @@
   "sftp.command.editRemote": "リモートで編集",
   "sftp.command.copyRemotePath": "リモートのパスをコピー",
   "sftp.command.copyRemoteRelativePath": "リモートの相対パスをコピー",
-  "sftp.command.copyPath": "パスをコピー",
+  "sftp.command.copyPath": "パスのコピー",
   "sftp.command.copyRelativePath": "相対パスをコピー",
   "sftp.command.copyLocalPath": "ローカルのパスをコピー",
   "sftp.command.copyLocalRelativePath": "ローカルの相対パスをコピー"
