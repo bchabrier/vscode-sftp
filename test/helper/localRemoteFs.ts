@@ -26,6 +26,26 @@ export default class LocalRemoteFileSystem extends RemoteFileSystem {
     const mt = new Date(this.toRemoteTimeInSecnonds(mtime) * 1000);
     return fse.futimes(fd, at, mt);
   }
+
+  // Override put to avoid memfs stream close bug by buffering input
+  async put(input: NodeJS.ReadableStream, path: string, option?: any): Promise<void> {
+    const chunks: Buffer[] = [];
+    await new Promise<void>((resolve, reject) => {
+      input.on('data', (c: Buffer) => chunks.push(Buffer.isBuffer(c) ? c : Buffer.from(c)));
+      input.on('error', reject);
+      input.on('end', () => resolve());
+    });
+    const buffer = Buffer.concat(chunks);
+    if (option && typeof option.fd === 'number') {
+      await new Promise<void>((resolve, reject) => {
+        fs.write(option.fd as number, buffer, 0, buffer.length, 0, err =>
+          err ? reject(err) : resolve()
+        );
+      });
+    } else {
+      await fse.outputFile(path, buffer, option && option.mode ? { mode: option.mode } : undefined);
+    }
+  }
 }
 
 [
@@ -35,7 +55,6 @@ export default class LocalRemoteFileSystem extends RemoteFileSystem {
   'close',
   'fstat',
   'get',
-  'put',
   'mkdir',
   'ensureDir',
   'list',
