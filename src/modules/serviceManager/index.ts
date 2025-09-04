@@ -162,6 +162,11 @@ export function getAllFileService(): FileService[] {
   return serviceManager.getAllValues();
 }
 
+export function getFileServiceById(id: number): FileService | undefined {
+  const all = getAllFileService();
+  return all.find(s => s.id === id);
+}
+
 export function getRunningTransformTasks(): TransferTask[] {
   return getAllFileService().reduce<TransferTask[]>((acc, fileService) => {
     return acc.concat(fileService.getPendingTransferTasks());

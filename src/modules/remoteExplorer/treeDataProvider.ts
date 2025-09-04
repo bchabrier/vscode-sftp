@@ -236,7 +236,7 @@ export default class RemoteTreeData
       return;
     }
 
-    showTextDocument(makePreivewUrl(item.resource.uri));
+    showTextDocument(item.resource.uri);
   }
 
   private _getRoots(): ExplorerRoot[] {
