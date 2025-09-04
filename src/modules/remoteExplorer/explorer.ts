@@ -26,11 +26,15 @@ export default class RemoteExplorer {
     registerCommand(context, COMMAND_REMOTEEXPLORER_VIEW_CONTENT, (item: ExplorerItem) =>
       this._treeDataProvider.showItem(item)
     );
+    // Grouping commands: host/context/default
+    vscode.commands.registerCommand('sftp.groupByHost', () => this.setGrouping('host'));
+    vscode.commands.registerCommand('sftp.groupByContext', () => this.setGrouping('context'));
+    vscode.commands.registerCommand('sftp.groupByDefault', () => this.setGrouping('default'));
   }
 
   refresh(item?: ExplorerItem) {
-    if (item && !UResource.isRemote(item.resource.uri)) {
-      const uri = item.resource.uri;
+    if (item && (item as any).resource && !UResource.isRemote((item as any).resource.uri)) {
+      const uri = (item as any).resource.uri;
       const fileService = getFileService(uri);
       if (!fileService) {
         if (uri.toString(true) == "file:///${command:sftp.sync.remoteToLocal}") {
@@ -40,9 +44,9 @@ export default class RemoteExplorer {
         }
       }
       const config = fileService.getConfig();
-      const localPath = item.resource.fsPath;
+      const localPath = (item as any).resource.fsPath;
       const remotePath = toRemotePath(localPath, config.context, config.remotePath);
-      item.resource = UResource.makeResource({
+      (item as any).resource = UResource.makeResource({
         remote: {
           host: config.host,
           port: config.port,
@@ -61,6 +65,13 @@ export default class RemoteExplorer {
 
   findRoot(remoteUri: vscode.Uri) {
     return this._treeDataProvider.findRoot(remoteUri);
+  }
+
+  setGrouping(mode: 'default' | 'host' | 'context') {
+    const { setContextValue } = require('../../host');
+    setContextValue('grouped-by-host', mode === 'host');
+    setContextValue('grouped-by-context', mode === 'context');
+    this._treeDataProvider.setGrouping(mode);
   }
 
   private _refreshSelection() {

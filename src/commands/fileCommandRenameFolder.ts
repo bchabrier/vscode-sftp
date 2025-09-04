@@ -4,6 +4,7 @@ import { checkFileCommand } from './abstract/createCommand';
 import { uriFromExplorerContextOrEditorContext } from './shared';
 import { UResource } from '../core';
 import { getFileService } from '../modules/serviceManager';
+import { refreshRemoteExplorer } from '../fileHandlers/shared';
 
 export default checkFileCommand({
   id: 'sftp.rename.folder',
@@ -15,10 +16,13 @@ export default checkFileCommand({
     const parent = path.posix.dirname(res.fsPath);
     const newName = await vscode.window.showInputBox({ value: base, prompt: '新しいフォルダー名' });
     if (!newName || newName === base) return;
-    const newRes = UResource.updateResource(UResource.makeResource(currentUri), { remotePath: path.posix.join(parent, newName) });
+    const newPath = path.posix.join(parent, newName);
     const fsService = getFileService(currentUri);
     if (!fsService) throw new Error('Remote service not found');
-    await vscode.workspace.fs.rename(currentUri, newRes.uri, { overwrite: false });
+    const remotefs = await fsService.getRemoteFileSystem(ctx.config);
+    await remotefs.ensureDir(parent);
+    if (typeof (remotefs as any).renameAtomic === 'function') await (remotefs as any).renameAtomic(res.fsPath, newPath);
+    else await remotefs.rename(res.fsPath, newPath);
+    await refreshRemoteExplorer(ctx.target, true);
   },
 });
-

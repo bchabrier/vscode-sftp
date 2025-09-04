@@ -123,7 +123,11 @@
       {
         "command": "sftp.setProfile",
         "title": "%sftp.command.setProfile%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/switch.svg",
+          "dark": "resources/dark/switch.svg"
+        }
       },
       {
         "command": "sftp.openConnectInTerminal",
@@ -328,7 +332,11 @@
       {
         "command": "sftp.createConnection",
         "title": "%sftp.command.createConnection%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
       },
       {
         "command": "sftp.editConnection",
@@ -348,27 +356,47 @@
       {
         "command": "sftp.groupByHost",
         "title": "%sftp.command.groupByHost%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "/resources/light/tree.svg",
+          "dark": "/resources/dark/tree.svg"
+        }
       },
       {
         "command": "sftp.groupByContext",
         "title": "%sftp.command.groupByContext%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "/resources/light/folder.svg",
+          "dark": "/resources/dark/folder.svg"
+        }
       },
       {
         "command": "sftp.groupByDefault",
         "title": "%sftp.command.groupByDefault%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "/resources/light/list.svg",
+          "dark": "/resources/dark/list.svg"
+        }
       },
       {
         "command": "sftp.rename.file",
         "title": "%sftp.command.renameFile%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/rename.svg",
+          "dark": "resources/dark/rename.svg"
+        }
       },
       {
         "command": "sftp.rename.folder",
         "title": "%sftp.command.renameFolder%",
-        "category": "SFTP"
+        "category": "SFTP",
+        "icon": {
+          "light": "resources/light/rename.svg",
+          "dark": "resources/dark/rename.svg"
+        }
       },
       {
         "command": "sftp.remote.chmod",
@@ -392,6 +420,13 @@
       }
     ],
     "menus": {
+      "view/title": [
+        {
+          "command": "sftp.remoteExplorer.refresh",
+          "when": "view == remoteExplorer",
+          "group": "navigation"
+        }
+      ],
       "commandPalette": [
         {
           "command": "sftp.setProfile",
@@ -665,13 +700,6 @@
           "command": "sftp.revealInRemoteExplorer",
           "when": "sftp.enabled && resourceScheme == file",
           "group": "2_files"
-        }
-      ],
-      "view/title": [
-        {
-          "command": "sftp.remoteExplorer.refresh",
-          "when": "view == remoteExplorer",
-          "group": "navigation"
         }
       ],
       "view/item/context": [
