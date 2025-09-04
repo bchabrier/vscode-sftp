@@ -21,11 +21,10 @@ export default class LocalRemoteFileSystem extends RemoteFileSystem {
   }
 
   futimes(fd: number, atime: number, mtime: number): Promise<void> {
-    return fse.futimes(
-      fd,
-      this.toRemoteTimeInSecnonds(atime),
-      this.toRemoteTimeInSecnonds(mtime)
-    );
+    // Use Date objects to avoid seconds/ms ambiguity across fs/memfs implementations
+    const at = new Date(this.toRemoteTimeInSecnonds(atime) * 1000);
+    const mt = new Date(this.toRemoteTimeInSecnonds(mtime) * 1000);
+    return fse.futimes(fd, at, mt);
   }
 }
 
