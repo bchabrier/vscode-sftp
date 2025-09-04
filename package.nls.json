@@ -39,10 +39,15 @@
   "sftp.command.delete": "Delete",
   "sftp.command.createFolder": "Create Folder",
   "sftp.command.createFile": "Create File",
-  "sftp.command.revealInExplorer": "Reveal in Explorer",
+  "sftp.command.revealInExplorer": "Reveal in Local Explorer",
   "sftp.command.revealInRemoteExplorer": "Reveal in Remote Explorer",
   "sftp.command.editInLocal": "Edit in Local",
   "sftp.command.viewContent": "View Content",
   "sftp.command.refresh": "Refresh",
-  "sftp.submenu.title": "[SFTP]"
+  "sftp.submenu.title": "[SFTP]",
+  "sftp.command.editRemote": "Edit Remotely",
+  "sftp.command.copyRemotePath": "Copy Remote Path",
+  "sftp.command.copyRemoteRelativePath": "Copy Remote Relative Path",
+  "sftp.command.copyLocalPath": "Copy Local Path",
+  "sftp.command.copyLocalRelativePath": "Copy Local Relative Path"
 }

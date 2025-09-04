@@ -39,10 +39,15 @@
   "sftp.command.delete": "削除",
   "sftp.command.createFolder": "フォルダーを作成",
   "sftp.command.createFile": "ファイルを作成",
-  "sftp.command.revealInExplorer": "エクスプローラーで表示",
+  "sftp.command.revealInExplorer": "ローカルエクスプローラで表示",
   "sftp.command.revealInRemoteExplorer": "リモートエクスプローラーで表示",
   "sftp.command.editInLocal": "ローカルで編集",
   "sftp.command.viewContent": "コンテンツを表示",
   "sftp.command.refresh": "更新",
-  "sftp.submenu.title": "[SFTP]"
+  "sftp.submenu.title": "[SFTP]",
+  "sftp.command.editRemote": "リモートで編集",
+  "sftp.command.copyRemotePath": "リモートのパスをコピー",
+  "sftp.command.copyRemoteRelativePath": "リモートの相対パスをコピー",
+  "sftp.command.copyLocalPath": "ローカルのパスをコピー",
+  "sftp.command.copyLocalRelativePath": "ローカルの相対パスをコピー"
 }

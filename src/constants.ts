@@ -63,3 +63,10 @@ export const COMMAND_REMOTEEXPLORER_VIEW_CONTENT = 'sftp.viewContent';
 
 export const COMMAND_CREATE_FOLDER = 'sftp.create.folder';
 export const COMMAND_CREATE_FILE = 'sftp.create.file';
+
+// Added commands
+export const COMMAND_EDIT_REMOTE = 'sftp.edit.remote';
+export const COMMAND_COPY_REMOTE_PATH = 'sftp.copyRemotePath';
+export const COMMAND_COPY_REMOTE_REL_PATH = 'sftp.copyRemoteRelativePath';
+export const COMMAND_COPY_LOCAL_PATH = 'sftp.copyLocalPath';
+export const COMMAND_COPY_LOCAL_REL_PATH = 'sftp.copyLocalRelativePath';
