@@ -61,7 +61,7 @@
     "configuration": [
       {
         "type": "object",
-        "title": "%sftp.config.title%",
+        "title": "%sftp.config.title.1%",
         "order": 1,
         "properties": {
           "sftp.warnOnNewerRemote": {
@@ -73,7 +73,7 @@
       },
       {
         "type": "object",
-        "title": "%sftp.config.title%",
+        "title": "%sftp.config.title.2%",
         "order": 2,
         "properties": {
           "sftp.downloadWhenOpenInRemoteExplorer": {
@@ -85,7 +85,7 @@
       },
       {
         "type": "object",
-        "title": "%sftp.config.title%",
+        "title": "%sftp.config.title.3%",
         "order": 3,
         "properties": {
           "sftp.printDebugLog": {
