@@ -3,6 +3,7 @@ import * as fileOperations from './fileBaseOperations';
 import { FileSystem, FileType } from './fs';
 import { Task } from './scheduler';
 import logger from '../logger';
+import { t } from '../i18n';
 
 let hasWarnedModifedTimePermission = false;
 
@@ -137,9 +138,9 @@ export default class TransferTask implements Task {
             // Lazy import to avoid a hard dependency cycle
           const { showConfirmMessage } = await import('../host');
           const ok = await showConfirmMessage(
-            'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?',
-            'Upload anyway',
-            'Skip',
+            t('confirm.newerRemote.message', 'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?'),
+            t('confirm.newerRemote.confirm', 'Upload anyway'),
+            t('confirm.newerRemote.cancel', 'Skip'),
             { modal: true, severity: 'warn' }
           );
             if (!ok) {
