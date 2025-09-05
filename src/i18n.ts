@@ -1,27 +1,18 @@
 import * as vscode from 'vscode';
 
-function isJa(): boolean {
-  try {
-    const lang = (vscode.env.language || '').toLowerCase();
-    return lang.startsWith('ja');
-  } catch {
-    return false;
-  }
+// Load package NLS bundles so strings are centralized with other UI text.
+// We avoid build-time NLS tooling by reading JSON at runtime.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const en = (() => { try { return require('../package.nls.json'); } catch { return {}; } })();
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const ja = (() => { try { return require('../package.nls.ja.json'); } catch { return {}; } })();
+
+function selectBundle() {
+  const lang = (vscode.env.language || '').toLowerCase();
+  return lang.startsWith('ja') ? ja : en;
 }
 
 export function t(key: string, fallback: string): string {
-  if (isJa()) {
-    switch (key) {
-      case 'confirm.newerRemote.message':
-        return 'リモートのファイルはローカルより新しいようです。上書きしてアップロードしますか？';
-      case 'confirm.newerRemote.confirm':
-        return '上書きしてアップロード';
-      case 'confirm.newerRemote.cancel':
-        return 'スキップ';
-      default:
-        return fallback;
-    }
-  }
-  return fallback;
+  const bundle = selectBundle();
+  return (bundle && bundle[key]) || fallback;
 }
-

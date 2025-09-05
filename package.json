@@ -58,27 +58,44 @@
         }
       ]
     },
-    "configuration": {
-      "type": "object",
-      "title": "%sftp.config.title%",
-      "properties": {
-        "sftp.warnOnNewerRemote": {
-          "type": "boolean",
-          "default": true,
-          "description": "%sftp.config.warnOnNewerRemote%"
-        },
-        "sftp.printDebugLog": {
-          "type": "boolean",
-          "default": false,
-          "description": "%sftp.config.printDebugLog%"
-        },
-        "sftp.downloadWhenOpenInRemoteExplorer": {
-          "type": "boolean",
-          "default": false,
-          "description": "%sftp.config.downloadWhenOpenInRemoteExplorer%"
+    "configuration": [
+      {
+        "type": "object",
+        "title": "%sftp.config.title%",
+        "order": 1,
+        "properties": {
+          "sftp.warnOnNewerRemote": {
+            "type": "boolean",
+            "default": true,
+            "description": "%sftp.config.warnOnNewerRemote%"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "%sftp.config.title%",
+        "order": 2,
+        "properties": {
+          "sftp.downloadWhenOpenInRemoteExplorer": {
+            "type": "boolean",
+            "default": false,
+            "description": "%sftp.config.downloadWhenOpenInRemoteExplorer%"
+          }
+        }
+      },
+      {
+        "type": "object",
+        "title": "%sftp.config.title%",
+        "order": 3,
+        "properties": {
+          "sftp.printDebugLog": {
+            "type": "boolean",
+            "default": false,
+            "description": "%sftp.config.printDebugLog%"
+          }
         }
       }
-    },
+    ],
     "commands": [
       {
         "command": "sftp.edit.remote",

@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import app from '../app';
-import { EXTENSION_NAME } from '../constants';
+import { OUTPUT_CHANNEL_TITLE } from '../constants';
 import StatusBarItem from './statusBarItem';
 
 let isShow = false;
-const outputChannel = vscode.window.createOutputChannel(EXTENSION_NAME);
+const outputChannel = vscode.window.createOutputChannel(OUTPUT_CHANNEL_TITLE);
 
 export function show() {
   app.sftpBarItem.updateStatus(StatusBarItem.Status.ok);

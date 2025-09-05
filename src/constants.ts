@@ -3,6 +3,8 @@ import * as path from 'path';
 const VENDOR_FOLDER = '.vscode';
 
 export const EXTENSION_NAME = 'sftp';
+// Human readable title for UI elements like Output channel
+export const OUTPUT_CHANNEL_TITLE = 'SFTP';
 export const SETTING_KEY_REMOTE = 'remotefs.remote';
 
 export const REMOTE_SCHEME = 'remote';

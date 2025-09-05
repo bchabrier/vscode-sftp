@@ -138,9 +138,9 @@ export default class TransferTask implements Task {
             // Lazy import to avoid a hard dependency cycle
           const { showConfirmMessage } = await import('../host');
           const ok = await showConfirmMessage(
-            t('confirm.newerRemote.message', 'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?'),
-            t('confirm.newerRemote.confirm', 'Upload anyway'),
-            t('confirm.newerRemote.cancel', 'Skip'),
+            t('sftp.message.newerRemote', 'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?'),
+            t('sftp.button.uploadAnyway', 'Upload anyway'),
+            t('sftp.button.skip', 'Skip'),
             { modal: true, severity: 'warn' }
           );
             if (!ok) {

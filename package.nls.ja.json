@@ -65,4 +65,8 @@
   "sftp.command.copyRelativePath": "相対パスをコピー",
   "sftp.command.copyLocalPath": "ローカルのパスをコピー",
   "sftp.command.copyLocalRelativePath": "ローカルの相対パスをコピー"
+  ,
+  "sftp.message.newerRemote": "リモートのファイルはローカルより新しいようです。上書きしてアップロードしますか？",
+  "sftp.button.uploadAnyway": "上書きしてアップロード",
+  "sftp.button.skip": "スキップ"
 }

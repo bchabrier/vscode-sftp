@@ -65,4 +65,8 @@
   "sftp.command.copyRelativePath": "Copy Relative Path",
   "sftp.command.copyLocalPath": "Copy Local Path",
   "sftp.command.copyLocalRelativePath": "Copy Local Relative Path"
+  ,
+  "sftp.message.newerRemote": "The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?",
+  "sftp.button.uploadAnyway": "Upload anyway",
+  "sftp.button.skip": "Skip"
 }
