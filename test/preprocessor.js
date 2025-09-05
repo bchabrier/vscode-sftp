@@ -1,11 +1,16 @@
-const tsc = require('typescript');
+const ts = require('typescript');
 const tsConfig = require('../tsconfig.json');
 
 module.exports = {
-  process(src, path) {
-    if (path.endsWith('.ts')) {
-      return tsc.transpile(src, tsConfig.compilerOptions, path, []);
+  process(src, filename) {
+    if (filename.endsWith('.ts')) {
+      const res = ts.transpileModule(src, {
+        compilerOptions: tsConfig.compilerOptions,
+        fileName: filename,
+        reportDiagnostics: false,
+      });
+      return { code: res.outputText };
     }
-    return src;
+    return { code: src };
   },
 };

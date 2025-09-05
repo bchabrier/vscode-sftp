@@ -12,7 +12,9 @@ import { flatten } from '../../utils';
 import logger from '../../logger';
 import { getOpenTextDocuments } from '../../host';
 
-interface InternalTransferOption extends FileHandleOption, TransferTaskTransferOption {}
+interface InternalTransferOption extends FileHandleOption, TransferTaskTransferOption {
+  warnOnNewerRemote?: boolean;
+}
 
 type ExternalTransferOption<T extends InternalTransferOption> = Pick<
   T,
@@ -58,8 +60,9 @@ function getAltDirection(direction: TransferDirection) {
 }
 
 function isFileModified(a: FileEntry, b: FileEntry): boolean {
-  // compare time at seconds
-  return Math.floor(a.mtime / 1000) !== Math.floor(b.mtime / 1000) || a.size !== b.size;
+  // Tolerate sub-second/resolution differences (memfs, remote futimes)
+  const timeDiffMs = Math.abs(a.mtime - b.mtime);
+  return timeDiffMs >= 1000 || a.size !== b.size;
 }
 
 function toHash<T, R = T>(items: T[], key: string, transform?: (a: T) => R): { [key: string]: R } {
@@ -121,6 +124,8 @@ async function transferFile(
   if (config.transferOption.ignore && config.transferOption.ignore(config.srcFsPath)) {
     return;
   }
+
+  // (warnOnNewerRemote) handled inside TransferTask just before upload
 
   collect(
     new TransferTask(

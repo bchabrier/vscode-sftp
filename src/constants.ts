@@ -3,6 +3,8 @@ import * as path from 'path';
 const VENDOR_FOLDER = '.vscode';
 
 export const EXTENSION_NAME = 'sftp';
+// Human readable title for UI elements like Output channel
+export const OUTPUT_CHANNEL_TITLE = 'SFTP';
 export const SETTING_KEY_REMOTE = 'remotefs.remote';
 
 export const REMOTE_SCHEME = 'remote';
@@ -63,3 +65,12 @@ export const COMMAND_REMOTEEXPLORER_VIEW_CONTENT = 'sftp.viewContent';
 
 export const COMMAND_CREATE_FOLDER = 'sftp.create.folder';
 export const COMMAND_CREATE_FILE = 'sftp.create.file';
+
+// Added commands
+export const COMMAND_EDIT_REMOTE = 'sftp.edit.remote';
+export const COMMAND_COPY_REMOTE_PATH = 'sftp.copyRemotePath';
+export const COMMAND_COPY_REMOTE_REL_PATH = 'sftp.copyRemoteRelativePath';
+export const COMMAND_COPY_LOCAL_PATH = 'sftp.copyLocalPath';
+export const COMMAND_COPY_LOCAL_REL_PATH = 'sftp.copyLocalRelativePath';
+export const COMMAND_COPY_REMOTE_PATH_GENERIC = 'sftp.copyRemotePath.generic';
+export const COMMAND_COPY_REMOTE_REL_PATH_GENERIC = 'sftp.copyRemoteRelativePath.generic';

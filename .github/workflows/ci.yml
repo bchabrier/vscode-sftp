@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test --silent
+
+      - name: Package VSIX
+        run: |
+          mkdir -p artifacts
+          NAME=$(node -p "require('./package.json').name")
+          PUB=$(node -p "require('./package.json').publisher")
+          VER=$(node -p "require('./package.json').version")
+          OUT="artifacts/${PUB}.${NAME}-${VER}.vsix"
+          npx --yes @vscode/vsce package --no-yarn --out "$OUT"
+          ls -la artifacts
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vsix
+          path: artifacts/*.vsix
+          if-no-files-found: error

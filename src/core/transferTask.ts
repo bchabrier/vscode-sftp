@@ -3,6 +3,7 @@ import * as fileOperations from './fileBaseOperations';
 import { FileSystem, FileType } from './fs';
 import { Task } from './scheduler';
 import logger from '../logger';
+import { t } from '../i18n';
 
 let hasWarnedModifedTimePermission = false;
 
@@ -26,6 +27,9 @@ export interface TransferOption {
   perserveTargetMode: boolean;
   useTempFile?: boolean;
   openSsh?: boolean;
+  // When uploading local -> remote, warn if the remote file
+  // is newer than the local copy before overwriting it.
+  warnOnNewerRemote?: boolean;
 }
 
 export default class TransferTask implements Task {
@@ -117,6 +121,37 @@ export default class TransferTask implements Task {
     const target = this._targetFsPath;
     const srcFs = this._srcFs;
     const targetFs = this._targetFs;
+    // Warn if remote is newer (only applies to local ➞ remote uploads)
+    if (
+      this._transferDirection === TransferDirection.LOCAL_TO_REMOTE &&
+      this._TransferOption &&
+      this._TransferOption.warnOnNewerRemote
+    ) {
+      try {
+        const [localStat, remoteStat] = await Promise.all([
+          srcFs.lstat(src),
+          targetFs.lstat(target).catch(() => null),
+        ]);
+        if (remoteStat) {
+          const DRIFT = 1000; // tolerate 1s drift
+          if (remoteStat.mtime > localStat.mtime + DRIFT) {
+            // Lazy import to avoid a hard dependency cycle
+          const { showConfirmMessage } = await import('../host');
+          const ok = await showConfirmMessage(
+            t('sftp.message.newerRemote', 'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?'),
+            t('sftp.button.uploadAnyway', 'Upload anyway'),
+            t('sftp.button.skip', 'Skip'),
+            { modal: true, severity: 'warn' }
+          );
+            if (!ok) {
+              return; // skip this file
+            }
+          }
+        }
+      } catch {
+        // Ignore check errors and continue upload
+      }
+    }
     const {
       perserveTargetMode,
       useTempFile,

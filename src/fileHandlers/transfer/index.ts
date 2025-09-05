@@ -1,4 +1,5 @@
 import { refreshRemoteExplorer } from '../shared';
+import { getExtensionSetting } from '../../modules/ext';
 import createFileHandler, { FileHandlerContext } from '../createFileHandler';
 import { transfer, sync, TransferOption, SyncOption, TransferDirection } from './transfer';
 
@@ -129,6 +130,7 @@ export const upload = createFileHandler<TransferOption>({
       openSsh: config.openSsh,
       // remoteTimeOffsetInHours: config.remoteTimeOffsetInHours,
       ignore: config.ignore,
+      warnOnNewerRemote: !!getExtensionSetting().warnOnNewerRemote,
     };
   },
   afterHandle() {
@@ -147,6 +149,7 @@ export const uploadFile = createFileHandler<TransferOption>({
       openSsh: config.openSsh,
       // remoteTimeOffsetInHours: config.remoteTimeOffsetInHours,
       ignore: config.ignore,
+      warnOnNewerRemote: !!getExtensionSetting().warnOnNewerRemote,
     };
   },
   afterHandle() {
@@ -165,6 +168,7 @@ export const uploadFolder = createFileHandler<TransferOption>({
       openSsh: config.openSsh,
       // remoteTimeOffsetInHours: config.remoteTimeOffsetInHours,
       ignore: config.ignore,
+      warnOnNewerRemote: !!getExtensionSetting().warnOnNewerRemote,
     };
   },
   afterHandle() {

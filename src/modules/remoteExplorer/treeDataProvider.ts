@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { showTextDocument } from '../../host';
+import { showTextDocument, executeCommand } from '../../host';
 import {
   upath,
   UResource,
@@ -53,7 +53,14 @@ export interface ExplorerRoot extends ExplorerChild {
   };
 }
 
-export type ExplorerItem = ExplorerRoot | ExplorerChild;
+interface ExplorerGroup {
+  group: true;
+  label: string;
+  key: string;
+  children: ExplorerRoot[];
+}
+
+export type ExplorerItem = any;
 
 function dirFirstSort(fileA: ExplorerItem, fileB: ExplorerItem) {
   if (fileA.isDirectory === fileB.isDirectory) {
@@ -68,6 +75,7 @@ export default class RemoteTreeData
   private _roots: ExplorerRoot[] | null;
   private _rootsMap: Map<Id, ExplorerRoot> | null;
   private _map: Map<vscode.Uri['query'], ExplorerItem>;
+  private _groupMode: 'default' | 'host' | 'context' = 'default';
 
   private _onDidChangeFolder: vscode.EventEmitter<ExplorerItem> = new vscode.EventEmitter<
     ExplorerItem
@@ -105,6 +113,13 @@ export default class RemoteTreeData
   }
 
   getTreeItem(item: ExplorerItem): vscode.TreeItem {
+    if ((item as any).group) {
+      return {
+        label: (item as ExplorerGroup).label,
+        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+        contextValue: 'group',
+      } as vscode.TreeItem;
+    }
     const isRoot = (item as ExplorerRoot).explorerContext !== undefined;
     let customLabel;
     if (isRoot) {
@@ -132,7 +147,15 @@ export default class RemoteTreeData
 
   async getChildren(item?: ExplorerItem): Promise<ExplorerItem[]> {
     if (!item) {
-      return this._getRoots();
+      const roots = this._getRoots();
+      if (this._groupMode === 'default') return roots;
+      if (this._groupMode === 'host') return this._groupBy(roots, r => r.explorerContext.config.host);
+      if (this._groupMode === 'context') return this._groupBy(roots, r => r.explorerContext.fileService.baseDir);
+      return roots;
+    }
+
+    if ((item as any).group) {
+      return (item as ExplorerGroup).children;
     }
 
     const root = this.findRoot(item.resource.uri);
@@ -232,11 +255,38 @@ export default class RemoteTreeData
   }
 
   showItem(item: ExplorerItem): void {
-    if (item.isDirectory) {
-      return;
+    if ((item as any).group) return;
+    const child = item as ExplorerChild;
+    if (child.isDirectory) return;
+    const uri = child.resource.uri;
+    this._openSmart(child).catch(()=> showTextDocument(uri));
+  }
+
+  private async _openSmart(child: ExplorerChild) {
+    const root = this.findRoot(child.resource.uri);
+    if (!root) return showTextDocument(child.resource.uri);
+    const { fileService, config } = root.explorerContext;
+    const remotefs = await fileService.getRemoteFileSystem(config);
+    // Simple extension-based binary list (safe fallback). If needed, we can add true text/binary detection later.
+    const binaryExts = new Set([
+      '.png','.jpg','.jpeg','.gif','.bmp','.webp','.svg','.ico','.cur',
+      '.pdf','.zip','.tar','.gz','.tgz','.bz2','.7z','.rar',
+      '.mp3','.ogg','.wav','.flac','.mp4','.webm','.mov','.avi',
+      '.ttf','.otf','.woff','.woff2','.psd','.ai'
+    ]);
+    const ext = upath.extname(child.resource.fsPath).toLowerCase();
+    const isBinary = binaryExts.has(ext);
+    if (!isBinary) {
+      return executeCommand('vscode.open', child.resource.uri);
     }
 
-    showTextDocument(makePreivewUrl(item.resource.uri));
+    // binary: download to temp and open, then auto-clean on close
+    const { fileOperations } = require('../../core');
+    const { makeTmpFile } = require('../../helper');
+    const localFs = require('../../core/localFs').default;
+    const tmpPath = await makeTmpFile({ prefix: 'sftp-', postfix: ext });
+    await fileOperations.transferFile(child.resource.fsPath, tmpPath, remotefs, localFs);
+    return executeCommand('vscode.open', (require('vscode')).Uri.file(tmpPath));
   }
 
   private _getRoots(): ExplorerRoot[] {
@@ -272,5 +322,24 @@ export default class RemoteTreeData
     });
     this._roots.sort((a,b) => a.explorerContext.config.remoteExplorer.order - b.explorerContext.config.remoteExplorer.order || a.explorerContext.fileService.name.localeCompare(b.explorerContext.fileService.name));
     return this._roots;
+  }
+
+  setGrouping(mode: 'default' | 'host' | 'context') {
+    this._groupMode = mode;
+    this._onDidChangeFolder.fire();
+  }
+
+  private _groupBy(roots: ExplorerRoot[], keyOf: (r: ExplorerRoot) => string): ExplorerGroup[] {
+    const map = new Map<string, ExplorerGroup>();
+    for (const r of roots) {
+      const key = keyOf(r);
+      let g = map.get(key);
+      if (!g) {
+        g = { group: true, label: key, key, children: [] } as ExplorerGroup;
+        map.set(key, g);
+      }
+      g.children.push(r);
+    }
+    return Array.from(map.values()).sort((a,b)=>a.label.localeCompare(b.label));
   }
 }
