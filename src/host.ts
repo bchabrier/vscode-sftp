@@ -86,15 +86,35 @@ export function showWarningMessage(message: string, ...items: string[]) {
 export async function showConfirmMessage(
   message: string,
   confirmLabel: string = 'Yes',
-  cancelLabel: string = 'No'
+  cancelLabel: string = 'No',
+  option?: { modal?: boolean; severity?: 'info' | 'warn' | 'error' }
 ) {
-  const result = await vscode.window.showInformationMessage(
-    message,
-    { title: confirmLabel },
-    { title: cancelLabel }
-  );
+  const modal = option?.modal === true;
+  const severity = option?.severity || 'info';
 
-  return Boolean(result && result.title === confirmLabel);
+  const items: vscode.MessageItem[] = [{ title: confirmLabel }, { title: cancelLabel }];
+
+  let result: vscode.MessageItem | undefined;
+  if (modal) {
+    const opts: vscode.MessageOptions = { modal: true };
+    if (severity === 'warn') {
+      result = await vscode.window.showWarningMessage(message, opts, ...items);
+    } else if (severity === 'error') {
+      result = await vscode.window.showErrorMessage(message, opts, ...items);
+    } else {
+      result = await vscode.window.showInformationMessage(message, opts, ...items);
+    }
+  } else {
+    if (severity === 'warn') {
+      result = await vscode.window.showWarningMessage(message, ...items);
+    } else if (severity === 'error') {
+      result = await vscode.window.showErrorMessage(message, ...items);
+    } else {
+      result = await vscode.window.showInformationMessage(message, ...items);
+    }
+  }
+
+  return Boolean(result && (result as vscode.MessageItem).title === confirmLabel);
 }
 
 export function showOpenDialog(options: vscode.OpenDialogOptions) {

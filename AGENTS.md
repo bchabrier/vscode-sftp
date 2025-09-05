@@ -41,6 +41,19 @@
 - PRs: include a clear description, link related issues, and screenshots/GIFs for UI changes.
 - Requirements: `npm test` green, `npm run compile` clean, docs/schema updated when configs change. Do not commit build artifacts in `dist/`.
 
+## Push Policy and Permissions
+- Always push your work when the task is complete so GitHub Actions can build and publish the VSIX for users to install.
+- If a permission error occurs when committing or pushing (for example: cannot create `.git/index.lock`, permission denied, or rejected due to access):
+  - Verify branch and remote: `git status`, `git rev-parse --abbrev-ref HEAD`, `git remote -v`.
+  - Ensure you have write access and credentials are configured.
+    - SSH: confirm `ssh -T git@github.com` succeeds and the repo remote uses SSH.
+    - HTTPS: use a Personal Access Token with `repo` scope in your credential helper.
+  - If a stale lock file exists: `rm -f .git/index.lock` and retry `git add/commit`.
+  - Retry push: `git add -A && git commit -m "<message>" && git push`.
+  - If environment-level restrictions block writes, ask the maintainer to grant push permission, then retry.
+
+These steps ensure the CI pipeline produces the VSIX artifact for verification.
+
 ## Security & Configuration Tips
 - Config lives in `.vscode/sftp.json` (validated by `schema/config.schema.json`). Never log or commit credentials.
 - Use `sftp.debug` only when needed and avoid printing secrets in logs.

@@ -135,12 +135,13 @@ export default class TransferTask implements Task {
           const DRIFT = 1000; // tolerate 1s drift
           if (remoteStat.mtime > localStat.mtime + DRIFT) {
             // Lazy import to avoid a hard dependency cycle
-            const { showConfirmMessage } = await import('../host');
-            const ok = await showConfirmMessage(
-              'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?',
-              'Upload anyway',
-              'Skip'
-            );
+          const { showConfirmMessage } = await import('../host');
+          const ok = await showConfirmMessage(
+            'The remote file is newer than your local copy. Upload anyway and overwrite the newer remote file?',
+            'Upload anyway',
+            'Skip',
+            { modal: true, severity: 'warn' }
+          );
             if (!ok) {
               return; // skip this file
             }
