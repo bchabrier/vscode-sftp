@@ -462,7 +462,11 @@ export default class FileService {
       this._eventEmitter.emit(Event.BEFORE_TRANSFER, task);
     });
     scheduler.onTaskDone((err, task) => {
-      this._pendingTransferTasks.delete(task as TransferTask);
+      // wait a little before removing the task from the pending task list,
+      // in case file watcher events are not generated immediately
+      setTimeout(() => {
+        this._pendingTransferTasks.delete(task as TransferTask);
+      }, 1000);
       this._eventEmitter.emit(Event.AFTER_TRANSFER, err, task);
     });
 
