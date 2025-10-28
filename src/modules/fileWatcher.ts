@@ -64,7 +64,6 @@ function uploadHandler(uri: vscode.Uri) {
 
   // current target is still in downloading, so don't upload it.
   if (currentDownloadTasks.find(task => task.localFsPath === uri.fsPath)) {
-    logger.info(`[watcher in uploadhandler] cancelling uploading file: ${uri.fsPath}, was found in downloading tasks:`, inspect(currentDownloadTasks.map(t => t.localFsPath)));
     return;
   }
 
