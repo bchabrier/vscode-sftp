@@ -82,7 +82,7 @@ function getWatcher(id) {
 
 function createWatcher(
   watcherBase: string,
-  watcherConfig: { files: false | string; autoUpload: boolean; autoDelete: boolean }
+  watcherConfig: { files: false | string; ignore: ((fsPath: string) => boolean) | null, autoUpload: boolean; autoDelete: boolean }
 ) {
   let watcher = getWatcher(watcherBase);
   if (watcher) {
@@ -109,8 +109,16 @@ function createWatcher(
   addWatcher(watcherBase, watcher);
 
   if (watcherConfig.autoUpload) {
-    watcher.onDidCreate(uploadHandler);
-    watcher.onDidChange(uploadHandler);
+
+    function checkIgnoredAndUploadHandler(uri: vscode.Uri) {
+      if (watcherConfig.ignore && watcherConfig.ignore(uri.fsPath)) {
+        return;
+      }
+      uploadHandler(uri);
+    }
+
+    watcher.onDidCreate(checkIgnoredAndUploadHandler);
+    watcher.onDidChange(checkIgnoredAndUploadHandler);
   }
 
   if (watcherConfig.autoDelete) {
