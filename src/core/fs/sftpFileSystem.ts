@@ -68,6 +68,19 @@ export default class SFTPFileSystem extends RemoteFileSystem {
     });
   }
 
+  stat(path: string): Promise<FileStats> {
+    return new Promise((resolve, reject) => {
+      this.sftp.stat(path, (err, stat) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        resolve(this.toFileStat(stat));
+      });
+    });
+  }
+
   open(
     path: string,
     flags: string,
@@ -303,7 +316,7 @@ export default class SFTPFileSystem extends RemoteFileSystem {
       // is borked.
       default:
         try {
-          const stat = await this.lstat(dir);
+          const stat = await this.stat(dir); // use stat, not lstat, as a link to a dir is still a dir
           if (stat.type !== FileType.Directory) throw err;
         } catch {
           // if the stat fails, then that's super weird.

@@ -429,7 +429,18 @@ async function _sync(
   await targetFs.ensureDir(targetFsPath);
 
   const files = await Promise.all([
-    srcFs.list(srcFsPath).catch(err => []),
+    srcFs.list(srcFsPath).catch(err => []).then(async entries => {
+      // consider symlink to dirs as dirs so that they can be synced correctly
+      for await (const entry of entries) {
+        if (entry.type === FileType.SymbolicLink) {
+          const stat = await srcFs.stat(entry.fspath);
+          if (stat.type === FileType.Directory) {
+            entry.type = FileType.Directory;
+          }
+        }
+      }
+      return entries;
+    }),
     targetFs.list(targetFsPath).catch(err => []),
   ]);
   await syncFiles(...files);

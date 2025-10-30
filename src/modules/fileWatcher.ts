@@ -7,6 +7,7 @@ import { WatcherService, TransferDirection } from '../core';
 import app from '../app';
 import StatusBarItem from '../ui/statusBarItem';
 import { getRunningTransformTasks } from './serviceManager';
+import { realpathSync } from 'fs';
 
 const watchers: {
   [x: string]: vscode.FileSystemWatcher;
@@ -63,7 +64,8 @@ function uploadHandler(uri: vscode.Uri) {
   );
 
   // current target is still in downloading, so don't upload it.
-  if (currentDownloadTasks.find(task => task.localFsPath === uri.fsPath)) {
+  // use realpath in the check, to avoid uploading a file which is a symlink to a downloading file.
+  if (currentDownloadTasks.find(task => realpathSync(task.localFsPath) === uri.fsPath)) {
     return;
   }
 
