@@ -8,6 +8,12 @@ import localFs from '../../../core/localFs';
 import TransferTask from '../../../core/transferTask';
 import RemoteFs from '../../../../test/helper/localRemoteFs';
 
+import { log, error } from "console";
+
+// restore console log and error to its original implementation to avoid jest decorations
+console.log = log;
+console.error = error;
+
 declare global {
   interface Array<T> {
     formatSep(): Array<T>;
