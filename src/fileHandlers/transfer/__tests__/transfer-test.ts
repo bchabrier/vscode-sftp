@@ -9,6 +9,8 @@ import TransferTask from '../../../core/transferTask';
 import RemoteFs from '../../../../test/helper/localRemoteFs';
 
 import { log, error } from "console";
+import { LocalFileSystem } from '../../../core';
+import LocalRemoteFileSystem from '../../../../test/helper/localRemoteFs';
 
 // restore console log and error to its original implementation to avoid jest decorations
 console.log = log;
@@ -23,6 +25,9 @@ declare global {
 Array.prototype.formatSep = function() {
   return this.map(str => str.replace(/\//g, path.sep))
 }
+
+// Use hacked 'put' from LocalRemoteFileSystem (not using createWritesStream) to avoid memfs stream close bug
+LocalFileSystem.prototype.put = LocalRemoteFileSystem.prototype.put;
 
 function createRemoteFs({ remoteTimeOffsetInHours = 0 } = {}) {
   return new RemoteFs(path, {
